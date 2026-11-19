@@ -23,3 +23,9 @@
   documento são ignoradas nesse documento.
 - Manter os separadores das ferramentas PDF montados quando inativos, para não perder
   ficheiros e seleções.
+
+## Dependências
+- Há dois lockfiles: `package-lock.json` (npm) e `bun.lock` (bun). O Cloudflare Pages instala
+  com `bun install --frozen-lockfile`, por isso a build falha se o `bun.lock` não estiver
+  atualizado. Depois de mudar dependências, correr `npm install` **e** `bun install` e fazer
+  commit dos dois.
