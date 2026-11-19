@@ -1,4 +1,9 @@
 import { PDFDocument } from "@cantoo/pdf-lib";
+import {
+  flattenPageAnnotations,
+  prepareFormAppearances,
+  removeUnreachableObjects,
+} from "./flatten";
 import { loadPdfDocument } from "./load";
 import { loadPdf } from "./pdfjs";
 import {
@@ -11,9 +16,11 @@ import {
  * Builds a new PDF in which only the pages that have zones marked are rasterised:
  * those pages become lossless PNGs where the marked pixels were cleared BEFORE
  * encoding (nothing is overlaid, so there is no text or image left underneath).
- * Pages without zones are copied unchanged, keeping their real, searchable text.
- * The output is a fresh document, so the original's metadata, attachments,
- * outline and form data are not carried over.
+ * Pages without zones are copied, keeping their real, searchable text; their visible
+ * annotations (filled-in fields, stamps, markups) are drawn into the page and all
+ * annotations and actions are then removed, so hidden comments, links and scripts are
+ * not carried over. The output is a fresh document, so the original's metadata,
+ * attachments, outline and form data are not carried over either.
  */
 export async function redactPdf(
   file: File,
@@ -32,6 +39,7 @@ export async function redactPdf(
     }
     // Only needed when some pages are kept as they are.
     const original = plan.size < total ? await loadPdfDocument(bytes) : null;
+    if (original) prepareFormAppearances(original);
     const output = await PDFDocument.create();
 
     for (let number = 1; number <= total; number++) {
@@ -39,12 +47,14 @@ export async function redactPdf(
       if (!rects) {
         const [copied] = await output.copyPages(original!, [number - 1]);
         output.addPage(copied);
+        flattenPageAnnotations(output, copied);
       } else {
         await addRedactedPage(output, source, number, rects);
       }
       onProgress?.(number, total);
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
     }
+    removeUnreachableObjects(output);
     output.setProducer("MGFácil");
     output.setCreator("MGFácil");
     return await output.save({ useObjectStreams: true });

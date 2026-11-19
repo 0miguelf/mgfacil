@@ -11,8 +11,12 @@
 - Só as páginas com zonas marcadas são rasterizadas: os píxeis das zonas são limpos ANTES de a
   página ser codificada como PNG sem perdas, para não ficar texto nem imagem por baixo. Nunca
   sobrepor retângulos ao conteúdo original.
-- As páginas sem zonas são copiadas sem alterações para um documento novo (sem metadados,
-  anexos ou dados de formulários do original).
+- As páginas sem zonas são copiadas para um documento novo (sem metadados, anexos ou dados
+  de formulários do original). As anotações visíveis dessas páginas (campos preenchidos,
+  carimbos, marcações) são desenhadas no conteúdo da página e depois todas as anotações e
+  ações são removidas (`src/lib/pdf/flatten.ts`), para não levar comentários escondidos,
+  links nem scripts. No fim, os objetos que deixaram de estar ligados ao documento são
+  apagados do ficheiro.
 - As zonas guardam-se em coordenadas normalizadas da página apresentada (rodada/recortada);
   pré-visualização e exportação usam o mesmo espaço de coordenadas.
 - Cada zona tem o seu âmbito de páginas; com vários documentos, páginas inexistentes num

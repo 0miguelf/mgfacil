@@ -293,8 +293,9 @@ export function PdfRedactionTab() {
           <p className="text-sm text-foreground/80">
             A remoção é definitiva no novo PDF, não uma barra sobre o original. Só as páginas com
             zonas marcadas passam a imagem nítida (200 dpi), sem texto por baixo; as restantes ficam
-            iguais ao original, com texto pesquisável. O novo PDF não leva os metadados nem os
-            anexos do original.
+            como no original, com texto pesquisável; campos preenchidos, carimbos e marcações passam
+            a fazer parte da página, e comentários, links e scripts são removidos. O novo PDF não
+            leva os metadados nem os anexos do original.
           </p>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0 space-y-3">
