@@ -29,9 +29,7 @@ export function AppShell({
             <img src={logoMarkUrl} alt="" width={36} height={36} className="h-9 w-9" />
           </Link>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-base font-semibold text-foreground sm:text-lg">
-              {title}
-            </h1>
+            <h1 className="truncate text-base font-semibold text-foreground sm:text-lg">{title}</h1>
             {subtitle ? (
               <p className="truncate text-xs text-muted-foreground sm:text-sm">{subtitle}</p>
             ) : null}
@@ -68,8 +66,24 @@ function PrivacyFooter() {
   return (
     <footer className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <div className="glass mx-auto max-w-xl rounded-2xl px-5 py-4 text-center text-xs text-foreground/80">
-        MGFácil · Todo o processamento é local. Nenhum ficheiro sai do seu dispositivo.
+        <p>MGFácil · Todo o processamento é local. Nenhum ficheiro sai do seu dispositivo.</p>
+        <LegalLinks className="mt-2" />
       </div>
     </footer>
+  );
+}
+
+export function LegalLinks({ className = "" }: { className?: string }) {
+  const link =
+    "font-medium text-foreground underline-offset-4 transition hover:text-primary hover:underline";
+  return (
+    <nav aria-label="Informação legal" className={`flex justify-center gap-4 ${className}`}>
+      <Link to="/privacidade" className={link}>
+        Privacidade
+      </Link>
+      <Link to="/termos" className={link}>
+        Termos de Utilização
+      </Link>
+    </nav>
   );
 }

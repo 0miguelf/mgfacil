@@ -14,7 +14,7 @@ import JSZip from "jszip";
 
 import { AppShell, PrivacyBanner } from "../components/AppShell";
 import { DropZone } from "../components/DropZone";
-import { formatBytes } from "../lib/format";
+import { formatBytes, uniqueFileName } from "../lib/format";
 import {
   convertToJpeg,
   isLikelyUnsupported,
@@ -147,11 +147,13 @@ function ImageConverterPage() {
         return;
       }
       const zip = new JSZip();
+      const used = new Set<string>();
       for (const it of done) {
         const base = readableBaseName(it.file.name);
         const blob = which === "original" ? it.result!.originalBlob : it.result!.reducedBlob;
         const suffix = which === "original" ? "" : "-reduzida";
-        zip.file(`${base}${suffix}.jpg`, blob);
+        // e.g. foto.png and foto.heic would both become foto.jpg and overwrite each other
+        zip.file(uniqueFileName(`${base}${suffix}.jpg`, used), blob);
       }
       const blob = await zip.generateAsync({ type: "blob" });
       downloadBlob(

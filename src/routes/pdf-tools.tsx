@@ -42,7 +42,7 @@ import { AppShell, PrivacyBanner } from "../components/AppShell";
 import { DropZone } from "../components/DropZone";
 import { PdfRedactionTab } from "../components/PdfRedactionTab";
 import { Button } from "../components/ui/button";
-import { formatBytes, sanitizeFileName } from "../lib/format";
+import { formatBytes, sanitizeFileName, uniqueFileName } from "../lib/format";
 import { loadPdf, renderThumbnail } from "../lib/pdf/pdfjs";
 import {
   buildFromPages,
@@ -576,12 +576,13 @@ function EditTab() {
     setBusy(true);
     try {
       const zip = new JSZip();
+      const used = new Set<string>();
       for (const g of usable) {
         const bytes = await buildFromPages(sourceBytesRef.current, buildRefsForGroup(g));
         const ab = new ArrayBuffer(bytes.byteLength);
         new Uint8Array(ab).set(bytes);
         zip.file(
-          (g.name.replace(/\.pdf$/i, "") || "documento") + ".pdf",
+          uniqueFileName((g.name.replace(/\.pdf$/i, "") || "documento") + ".pdf", used),
           new Blob([ab], { type: "application/pdf" }),
         );
       }

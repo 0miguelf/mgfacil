@@ -27,7 +27,7 @@ import {
   type RedactionZone,
   type ZoneScope,
 } from "../lib/pdf/redaction-rules";
-import { sanitizeFileName } from "../lib/format";
+import { sanitizeFileName, uniqueFileName } from "../lib/format";
 
 type Doc = { id: string; file: File; total: number };
 type Result = { name: string; bytes: Uint8Array };
@@ -207,11 +207,10 @@ export function PdfRedactionTab() {
         const bytes = await redactPdf(doc.file, plan, (done, pages) =>
           setProgress({ file: i + 1, files: docs.length, page: done, pages }),
         );
-        let name = `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes.pdf`;
-        for (let n = 2; usedNames.has(name); n++) {
-          name = `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes-${n}.pdf`;
-        }
-        usedNames.add(name);
+        const name = uniqueFileName(
+          `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes.pdf`,
+          usedNames,
+        );
         out.push({ name, bytes });
       }
       setResults(out);
@@ -294,8 +293,9 @@ export function PdfRedactionTab() {
           <p className="text-sm text-foreground/80">
             A remoção é definitiva no novo PDF, não uma barra sobre o original. Só as páginas com
             zonas marcadas passam a imagem nítida (200 dpi), sem texto por baixo; as restantes ficam
-            iguais ao original, com texto pesquisável. O novo PDF não leva os metadados nem os
-            anexos do original.
+            como no original, com texto pesquisável; campos preenchidos, carimbos e marcações passam
+            a fazer parte da página, e comentários, links e scripts são removidos. O novo PDF não
+            leva os metadados nem os anexos do original.
           </p>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0 space-y-3">
