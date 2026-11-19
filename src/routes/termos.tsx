@@ -22,8 +22,8 @@ function Terms() {
       <section>
         <h2>1. Identificação</h2>
         <p>
-          O {SITE.name}, disponível em {SITE.domain}, é mantido por {SITE.owner}, a título
-          individual. Contacto: <ContactLink />.
+          O {SITE.name}, disponível em {SITE.domain}, é mantido por {SITE.owner}. Contacto:{" "}
+          <ContactLink />.
         </p>
         <p>
           Ao utilizar o site, aceita estes Termos de Utilização. Se não concordar com eles, não

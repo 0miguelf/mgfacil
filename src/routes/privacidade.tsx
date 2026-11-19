@@ -39,9 +39,8 @@ function Privacy() {
       <section>
         <h2>1. Responsável pelo tratamento</h2>
         <p>
-          O {SITE.name} ({SITE.domain}) é mantido por {SITE.owner}, a título individual. Para
-          qualquer questão sobre privacidade ou para exercer os seus direitos, contacte:{" "}
-          <ContactLink />.
+          O {SITE.name} ({SITE.domain}) é mantido por {SITE.owner}. Para qualquer questão sobre
+          privacidade ou para exercer os seus direitos, contacte: <ContactLink />.
         </p>
       </section>
 
