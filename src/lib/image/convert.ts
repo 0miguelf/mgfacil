@@ -43,14 +43,10 @@ async function loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {
 
 async function decodeToImage(file: File): Promise<HTMLImageElement> {
   if (isHeic(file)) {
-    const mod = await import("heic2any");
-    const heic2any = mod.default;
-    const converted = (await heic2any({
-      blob: file,
-      toType: "image/jpeg",
-      quality: 0.95,
-    })) as Blob | Blob[];
-    const blob = Array.isArray(converted) ? converted[0] : converted;
+    // The "csp" build never evaluates strings as code, so it works under the site's
+    // strict Content-Security-Policy (no 'unsafe-eval').
+    const { heicTo } = await import("heic-to/csp");
+    const blob = await heicTo({ blob: file, type: "image/jpeg", quality: 0.95 });
     return loadImageFromBlob(blob);
   }
   return loadImageFromBlob(file);

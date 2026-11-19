@@ -32,6 +32,15 @@ qualquer serviço de páginas estáticas (Cloudflare Pages, Netlify, GitHub Page
 As páginas são pré-geradas em HTML; `404.html` é servido automaticamente para endereços
 inexistentes.
 
+### Segurança
+
+O build acrescenta uma Content-Security-Policy estrita (`scripts/csp.mjs`): só são executados
+os scripts do próprio site e os scripts inline do framework, autorizados pela sua hash, e
+`connect-src 'self'` impede o navegador de enviar dados para qualquer outro servidor. A
+política fica numa `<meta>` em cada página (funciona em qualquer alojamento) e em
+`dist/client/_headers`, que o Cloudflare Pages e o Netlify enviam como cabeçalhos HTTP, com
+proteção adicional contra a inclusão do site noutras páginas (`frame-ancestors`).
+
 ## Tecnologia
 
 React, TanStack Router/Start, Tailwind CSS, PDF.js e pdf-lib.

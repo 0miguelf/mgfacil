@@ -3,6 +3,9 @@
 ## Privacidade
 - Todo o processamento de ficheiros é local, no navegador. Não acrescentar pedidos de rede,
   analytics ou bibliotecas que carreguem código de CDNs.
+- A Content-Security-Policy gerada por `scripts/csp.mjs` faz parte desta garantia. Não a
+  alargar (`'unsafe-eval'`, `'unsafe-inline'` em `script-src`, outros domínios em
+  `connect-src`); escolher bibliotecas que funcionem com ela (ex.: `heic-to/csp`).
 
 ## Remover informações de PDFs
 - Só as páginas com zonas marcadas são rasterizadas: os píxeis das zonas são limpos ANTES de a
