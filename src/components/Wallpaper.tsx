@@ -15,7 +15,8 @@ export function Wallpaper() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat transition-opacity duration-700"
       style={{
-        backgroundImage: `linear-gradient(180deg, oklch(1 0 0 / 0.25), oklch(1 0 0 / 0.45)), url(${url})`,
+        // A light veil only, so the photo stays vivid behind the glass.
+        backgroundImage: `linear-gradient(180deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0.16)), url(${url})`,
       }}
     />
   );

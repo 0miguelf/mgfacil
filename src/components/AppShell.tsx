@@ -15,7 +15,7 @@ export function AppShell({
 }) {
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-30 border-b border-white/40 bg-white/40 backdrop-blur-xl">
+      <header className="glass sticky top-0 z-30 border-x-0 border-t-0">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
           <Link
             to="/"

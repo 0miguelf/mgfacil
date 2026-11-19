@@ -33,7 +33,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-glass: var(--glass);
   --color-glass-border: var(--glass-border);
   --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -47,12 +46,12 @@
   --card-foreground: oklch(0.18 0.02 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.02 240);
-  --primary: oklch(0.58 0.14 240);
+  --primary: oklch(0.44 0.16 250);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.96 0.005 240);
   --secondary-foreground: oklch(0.22 0.02 240);
   --muted: oklch(0.955 0.005 240);
-  --muted-foreground: oklch(0.5 0.02 240);
+  --muted-foreground: oklch(0.34 0.025 240);
   --accent: oklch(0.75 0.11 165);
   --accent-foreground: oklch(0.18 0.03 165);
   --success: oklch(0.7 0.13 160);
@@ -61,12 +60,25 @@
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.92 0.006 240);
   --input: oklch(0.94 0.006 240);
-  --ring: oklch(0.58 0.14 240);
+  --ring: oklch(0.44 0.16 250);
 
-  --glass: oklch(1 0 0 / 0.55);
-  --glass-border: oklch(1 0 0 / 0.6);
-  --glass-shadow: 0 8px 32px oklch(0.4 0.05 240 / 0.08), 0 2px 8px oklch(0.4 0.05 240 / 0.04);
-  --glass-shadow-hover: 0 16px 48px oklch(0.4 0.08 240 / 0.14), 0 4px 12px oklch(0.4 0.05 240 / 0.06);
+  /* "Liquid glass": a light, translucent tint that catches light from the top-left,
+     strong blur and saturation for refraction, and bright specular rims on the edges. */
+  --glass: linear-gradient(
+    135deg,
+    oklch(1 0 0 / 0.62) 0%,
+    oklch(1 0 0 / 0.46) 45%,
+    oklch(1 0 0 / 0.54) 100%
+  );
+  --glass-border: oklch(1 0 0 / 0.55);
+  --glass-filter: blur(24px) saturate(170%) brightness(1.35);
+  --glass-rim:
+    inset 0 1px 0 oklch(1 0 0 / 0.9), inset 1px 0 0 oklch(1 0 0 / 0.35),
+    inset 0 -1px 0 oklch(1 0 0 / 0.3), inset 0 0 24px oklch(1 0 0 / 0.18);
+  --glass-shadow:
+    var(--glass-rim), 0 10px 36px oklch(0.25 0.04 240 / 0.16), 0 2px 8px oklch(0.25 0.04 240 / 0.08);
+  --glass-shadow-hover:
+    var(--glass-rim), 0 18px 52px oklch(0.25 0.06 240 / 0.22), 0 4px 12px oklch(0.25 0.04 240 / 0.1);
 
   --gradient-bg: radial-gradient(
       ellipse 80% 60% at 15% 10%,
@@ -100,15 +112,17 @@
 
 @utility glass {
   background: var(--glass);
-  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 @utility glass-strong {
-  background: oklch(1 0 0 / 0.75);
-  backdrop-filter: blur(28px) saturate(200%);
-  border: 1px solid oklch(1 0 0 / 0.7);
+  background: linear-gradient(135deg, oklch(1 0 0 / 0.72), oklch(1 0 0 / 0.58));
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.06);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.06);
+  border: 1px solid oklch(1 0 0 / 0.65);
   box-shadow: var(--glass-shadow);
 }
 
@@ -120,6 +134,6 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--glass-shadow-hover);
-    background: oklch(1 0 0 / 0.72);
+    background: linear-gradient(135deg, oklch(1 0 0 / 0.62), oklch(1 0 0 / 0.46));
   }
 }
