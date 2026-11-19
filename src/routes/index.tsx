@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ImageIcon, FileText, ArrowRight, ShieldCheck, UserX, Zap } from "lucide-react";
 
 import { Clock } from "@/components/Clock";
+import { LegalLinks } from "@/components/AppShell";
 import logoUrl from "@/assets/logo-mgfacil.png";
 
 export const Route = createFileRoute("/")({
@@ -142,6 +143,7 @@ function Home() {
             </a>
             . Todos os direitos reservados.
           </p>
+          <LegalLinks className="mt-2" />
         </div>
       </footer>
     </div>
