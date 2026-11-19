@@ -27,7 +27,7 @@ import {
   type RedactionZone,
   type ZoneScope,
 } from "../lib/pdf/redaction-rules";
-import { sanitizeFileName } from "../lib/format";
+import { sanitizeFileName, uniqueFileName } from "../lib/format";
 
 type Doc = { id: string; file: File; total: number };
 type Result = { name: string; bytes: Uint8Array };
@@ -207,11 +207,10 @@ export function PdfRedactionTab() {
         const bytes = await redactPdf(doc.file, plan, (done, pages) =>
           setProgress({ file: i + 1, files: docs.length, page: done, pages }),
         );
-        let name = `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes.pdf`;
-        for (let n = 2; usedNames.has(name); n++) {
-          name = `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes-${n}.pdf`;
-        }
-        usedNames.add(name);
+        const name = uniqueFileName(
+          `${sanitizeFileName(doc.file.name, "documento")}-sem-informacoes.pdf`,
+          usedNames,
+        );
         out.push({ name, bytes });
       }
       setResults(out);
